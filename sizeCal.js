@@ -1,53 +1,26 @@
-function sizeCalculate() {
-  let t = document.querySelector('input[name="btypeRad"]:checked').value;
-  let h = (document.getElementById("myHeight").value).trim();
-  let i = (document.getElementById("myInseam").value).trim();
-  let size;
-  //xxxxx calculate bike size xxxxx
-  if(t == 2){//road bike
-    if(h >= 155 && h <= 163){
-       size = '50';
-    }else if(h >= 164 && h <= 169){
-       if(i >= 74 && h <= 77){
-        size = '52';
-       }else if(i > 77){
-        size = '54';
-       }else{
-        size = '50';
-       }
-    }else if(h >= 170 && h <= 179){
-       if(i >= 78 && h <= 82){
-        size = '54';
-       }else if(i > 82){
-        size = '56';
-       }else{
-        size = '52';
-       }
-    }else if(h >= 180){
-       if(i >= 78){
-        size = '56';
-       }else{
-        size = '54';
-       }
-    }else{
-       size = 'N/A';
-    }
-  }else{//mountain bike
-    if(h >= 155 && h <= 163){
-      size = 'S';
-   }else if(h >= 164 && h <= 169){
-      size = 'M';
-   }else if(h >= 170 && h <= 179){
-      size = 'L';
-   }else if(h >= 180){
-      size = 'XL';
-   }else{
-      size = 'N/A';
+function calculateBikeSize(bikeTypeValue, heightCm, inseamCm) {
+   let bikeSizeText = "";
+   let bikeSizeImageSrc = "";
+
+   if (bikeTypeValue === '1') { // Mountain bike
+       const frameSizeInInches = (inseamCm * 0.66).toFixed(1);
+       bikeSizeText = `ขนาดเฟรมที่แนะนำ (โดยประมาณ): ${frameSizeInInches} นิ้ว`;
+       bikeSizeImageSrc = './mountain_bike.jpg'; // เปลี่ยนเป็นชื่อไฟล์ Mountain bike ของคุณ
+   } else if (bikeTypeValue === '2') { // Road bike
+       const frameSizeInCm = Math.round(heightCm * 0.65);
+       bikeSizeText = `ขนาดเฟรมที่แนะนำ (โดยประมาณ): ${frameSizeInCm} ซม.`;
+       bikeSizeImageSrc = "./road_bike.jpg"; // เปลี่ยนเป็นชื่อไฟล์ Road bike ของคุณ
+   } else {
+       bikeSizeText = "ไม่สามารถคำนวณขนาดได้";
    }
-  }
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  return size;
+   // แสดงผลลัพธ์ใน Modal
+   const modal = new bootstrap.Modal(document.getElementById('myModal'));
+   const modalTitle = document.getElementById('modal-title');
+   const modalBody = document.querySelector('#myModal .modal-body');
+
+   modalTitle.innerText = 'ผลการคำนวณขนาดจักรยาน';
+   modalBody.innerHTML = `<img src="${bikeSizeImageSrc}" id="info-img" style="max-width: 100%; height: auto;" alt="ผลการคำนวณขนาดจักรยาน"><p class="mt-2">${bikeSizeText}</p>`;
+
+   modal.toggle();
 }
-
-
